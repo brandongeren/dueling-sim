@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import * as Joi from 'joi';
-import {User} from '../models/user.model';
+// @ts-ignore
+const User = require('../models/user.model');
 
 const userSchema = Joi.object({
   username: Joi.string().required(),
@@ -17,13 +18,8 @@ export async function insert(user) {
   user.hashedPassword = bcrypt.hashSync(user.password, 10);
   delete user.password;
   let newUser = new User(user);
-  await newUser.save((err, product) => {
-    console.log(err);
-    console.log('attempt at logging product');
-    console.log('email: ' + product.email);
-    console.log('hashed password' + product.hashedPassword);
-    console.log('username: ' + product.username);
-  });
+  // @ts-ignore
+  await newUser.save();
   console.log('user saved');
   console.log('object username: ' + newUser.username);
   console.log('object email: ' + newUser.email);

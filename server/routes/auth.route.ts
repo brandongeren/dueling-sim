@@ -9,7 +9,9 @@ const router = express.Router();
 export default router;
 
 router.post('/register', asyncHandler(register), login);
+// @ts-ignore
 router.post('/login', passport.authenticate('local', { session: false }), login);
+// @ts-ignore
 router.get('/me', passport.authenticate('jwt', { session: false }), login);
 
 // async function register(req, res, next) {
