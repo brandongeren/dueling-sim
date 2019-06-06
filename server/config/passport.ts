@@ -1,11 +1,12 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const bcrypt = require('bcrypt');
+import * as passport from 'passport';
+import * as LocalStrategy from 'passport-local';
+import * as passportJWT from 'passport-jwt';
+import * as bcrypt from 'bcrypt';
+const JwtStrategy = passportJWT.Strategy;
+const ExtractJwt = passportJWT.ExtractJwt;
 
-const User = require('../models/user.model');
-const config = require('./config');
+import {User} from '../models/user.model';
+import * as config from './config';
 
 const localLogin = new LocalStrategy({
   usernameField: 'email'
@@ -35,4 +36,4 @@ const jwtLogin = new JwtStrategy({
 passport.use(jwtLogin);
 passport.use(localLogin);
 
-module.exports = passport;
+export default passport;

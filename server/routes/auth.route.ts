@@ -1,8 +1,8 @@
 import * as express from 'express';
 import * as asyncHandler from 'express-async-handler'
 import * as passport from 'passport';
-import * as userCtrl from '../controllers/user.controller';
-import * as authCtrl from '../controllers/auth.controller';
+import {insert} from '../controllers/user.controller';
+import {generateToken} from '../controllers/auth.controller';
 import * as config from '../config/config';
 
 const router = express.Router();
@@ -12,17 +12,21 @@ router.post('/register', asyncHandler(register), login);
 router.post('/login', passport.authenticate('local', { session: false }), login);
 router.get('/me', passport.authenticate('jwt', { session: false }), login);
 
-
+// async function register(req, res, next) {
 async function register(req, res, next) {
-  let user = await userCtrl.insert(req.body);
-  user = user.toObject();
-  delete user.hashedPassword;
+  console.log('register attempted');
+  let user = await insert(req.body);
+  console.log('async function completed');
+  if (user) {
+    delete user.hashedPassword;
+  }
   req.user = user;
   next()
 }
 
 function login(req, res) {
+  console.log('login attempted');
   let user = req.user;
-  let token = authCtrl.generateToken(user);
+  let token = generateToken(user);
   res.json({ user, token });
 }

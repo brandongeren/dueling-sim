@@ -12,7 +12,7 @@ import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from './swagger.json';
 import routes from '../routes/index.route';
 import * as config from './config';
-import * as passport from './passport';
+import passport from './passport';
 import * as events from '../../events';
 
 const app = express();

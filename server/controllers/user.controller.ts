@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as Joi from 'joi';
-import * as User from '../models/user.model';
+import {User} from '../models/user.model';
 
 const userSchema = Joi.object({
   username: Joi.string().required(),
@@ -11,8 +11,22 @@ const userSchema = Joi.object({
 })
 
 export async function insert(user) {
+// export function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
+  // user = Joi.validate(user, userSchema, { abortEarly: false });
   user.hashedPassword = bcrypt.hashSync(user.password, 10);
   delete user.password;
-  return await new User(user).save();
+  let newUser = new User(user);
+  await newUser.save((err, product) => {
+    console.log(err);
+    console.log('attempt at logging product');
+    console.log('email: ' + product.email);
+    console.log('hashed password' + product.hashedPassword);
+    console.log('username: ' + product.username);
+  });
+  console.log('user saved');
+  console.log('object username: ' + newUser.username);
+  console.log('object email: ' + newUser.email);
+  console.log('object hashedPassword: ' + newUser.hashedPassword);
+  return newUser;
 }
