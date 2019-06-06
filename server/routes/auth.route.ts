@@ -1,12 +1,12 @@
-const express = require('express');
-const asyncHandler = require('express-async-handler')
-const passport = require('passport');
-const userCtrl = require('../controllers/user.controller');
-const authCtrl = require('../controllers/auth.controller');
-const config = require('../config/config');
+import * as express from 'express';
+import * as asyncHandler from 'express-async-handler'
+import * as passport from 'passport';
+import * as userCtrl from '../controllers/user.controller';
+import * as authCtrl from '../controllers/auth.controller';
+import * as config from '../config/config';
 
 const router = express.Router();
-module.exports = router;
+export default router;
 
 router.post('/register', asyncHandler(register), login);
 router.post('/login', passport.authenticate('local', { session: false }), login);
