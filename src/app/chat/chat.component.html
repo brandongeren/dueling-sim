@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="column">
+    <h2>General</h2>
+    <div *ngFor="let message of messages">
+      <b><font color="{{message.color}}">{{message.from.username}}:</font></b> {{message.message}}
+    </div>
+    <input [(ngModel)]="message" (keyup)="$event.keyCode == 13 && sendMessage()" />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+  <div class="column">
+    <h2>Private Messages</h2>
+    <div *ngFor="let message of privateMessages[to]">
+      <b><font color="{{message.color}}">{{message.from.username}}:</font></b> {{message.message}}
+    </div>    
+    <input [(ngModel)]="to" placeholder="to"/>
+    <input [(ngModel)]="privateMessage" (keyup)="$event.keyCode == 13 && sendPrivateMessage()" />
+    <button (click)="sendPrivateMessage()">Send</button>  
+  </div>
+</div>
