@@ -1,6 +1,8 @@
 ## Welcome to the newest dueling simulator
 Duels are simulated here
 
+Starter code is taken from (https://mean.io)
+
 ### Pre-requisites
 * git - [Installation guide](https://www.linode.com/docs/development/version-control/how-to-install-git-on-linux-mac-and-windows/) .  
 * node.js - [Download page](https://nodejs.org/en/download/) .  
