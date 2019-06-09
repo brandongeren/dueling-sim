@@ -19,12 +19,12 @@ export interface IGameState {
 }
 
 export interface IPlayerGameState {
-  hand: Array<GameCard>,
-  banish: Array<GameCard>,
-  deck: Array<GameCard>,
-  extra: Array<GameCard>,
+  hand: GameCard[],
+  banish: GameCard[],
+  deck: GameCard[],
+  extra: GameCard[],
   // graveyard is of type ICard because it is always public information
-  grave: Array<ICard>,
+  grave: ICard[],
   s1: IZone,
   s2: IZone,
   s3: IZone,
@@ -39,12 +39,34 @@ export interface IPlayerGameState {
 
 export interface IZone {
   card?: GameCard,
-  faceup: Boolean,
+  faceup?: Boolean,
+  removeCard(),
+}
+
+export class Zone implements IZone {
+  card?: GameCard;
+  faceup?: Boolean;
+ 
+  constructor() { }
+
+  removeCard() {
+    this.card = undefined;
+    this.faceup = undefined;
+  }
 }
 
 export interface IMonsterZone extends IZone {
   // atkPosition is true if the monster is in atk position
   atkPosition: Boolean,
+}
+
+export class MonsterZone extends Zone implements IMonsterZone {
+  atkPosition: boolean;
+
+  constructor(atkPosition: boolean) {
+    super();
+    this.atkPosition = atkPosition;
+  }
 }
 
 export type GameCard = ICard|IUnknownCard;
@@ -59,8 +81,8 @@ export interface ICard {
   // race refers to monster type (spellcaster, warrior, etc)
   // race is also used to refer to spell/trap type (counter, continuous, equip, etc)
   race: String,
-  set_tag: Array<String>,
-  setcode: Array<String>,
+  set_tag: String[],
+  setcode: String[],
   // TODO: figure out how the sim is going to handle card images
   image_url: String,
 
@@ -81,9 +103,71 @@ export interface ICard {
   // link monster card properties
   // TODO: evaluate if link monsters should be a separate type
   linkval?: String,
-  linkmarkers?: Array<String>,
+  linkmarkers?: String[],
 }
 
+export class Card implements ICard {
+  passcode: String;
+  name: String;
+  type: String;
+  desc: String;
+  race: String;
+  set_tag: String[];
+  setcode: String[];
+  image_url: String;
+  archetype?: String;
+  level?: String;
+  atk?: String;
+  def?: String;
+  attribute?: String;
+  scale?: String;
+  linkval?: String;
+  linkmarkers?: String[];
+
+  constructor(
+    passcode: String,
+    name: String,
+    type: String,
+    desc: String,
+    race: String,
+    set_tag: String[],
+    setcode: String[],
+    image_url: String,
+    archetype?: String,
+    level?: String,
+    atk?: String,
+    def?: String,
+    attribute?: String,
+    scale?: String,
+    linkval?: String,
+    linkmarkers?: String[],
+  ) {
+    this.passcode = passcode;
+    this.name = name;
+    this.type = type;
+    this.desc = desc;
+    this.race = race;
+    this.set_tag = set_tag;
+    this.setcode = setcode;
+    this.image_url = image_url;
+    this.archetype = archetype;
+    this.level = level;
+    this.atk = atk;
+    this.def = def;
+    this.attribute = attribute;
+    this.scale = scale;
+    this.linkval = linkval;
+    this.linkmarkers = linkmarkers;
+  }
+}
 export interface IUnknownCard {
   image_url: String;
+}
+
+export class UnknownCard implements IUnknownCard{
+  image_url: String;
+  
+  constructor() {
+    this.image_url = 'https://vignette.wikia.nocookie.net/yugioh/images/d/d7/Back-Anime-DM.png/revision/latest?cb=20071029201207';
+  }
 }
