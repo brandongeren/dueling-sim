@@ -27,8 +27,6 @@ if (config.env === 'development') {
   app.use(logger('dev'));
 }
 
-// TODO: refactor the whole backend to TypeScript
-
 // Choose what fronten framework to serve the dist from
 var distDir = '../../dist/';
 if (config.frontend == 'react') {
@@ -92,8 +90,6 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-// chat stuff follows
-// TODO: refactor all of this into a new file
 io.on(events.CONNECT, handleSocket);
 
 http.listen(socket_port, () => {

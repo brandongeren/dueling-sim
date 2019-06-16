@@ -45,8 +45,6 @@ export function handleSocket(socket) {
     // socket.to allows you to have different channels and shit
     // oh and you can also do private messages that way
     // more info: https://socket.io/docs/emit-cheatsheet/
-    // TODO: BIG TODO
-    // make the code so much simpler this way holy hell
     socket.emit(events.MESSAGE_RECEIVED, { message: message, from: from, });
     // TODO: doing socket.emit and socket.broadcast.emit is messy
     // you can replace this with io.emit if you find a way to access io in this file
