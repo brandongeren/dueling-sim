@@ -7,10 +7,12 @@ import * as config from './config';
 
 // connect to mongo db
 const mongoUri = config.mongo.host;
-mongoose.connect(mongoUri, { keepAlive: 1 });
+mongoose.connect(mongoUri, { keepAlive: true, useNewUrlParser: true });
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`);
 });
+
+console.log('mongo db connected');
 
 // print mongoose logs in dev env
 if (config.MONGOOSE_DEBUG) {
