@@ -13,14 +13,14 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   // TODO: login using username instead of email
-  email: string;
+  username: string;
   password: string;
 
   ngOnInit() {
   }
 
   login(): void {
-    this.authService.login(this.email, this.password)
+    this.authService.login(this.username, this.password)
     .subscribe(data => {
       this.router.navigate(['']);
     })
