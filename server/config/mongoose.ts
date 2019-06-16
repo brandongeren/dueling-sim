@@ -1,15 +1,18 @@
-const mongoose = require('mongoose');
-const util = require('util');
-const debug = require('debug')('express-mongoose-es6-rest-api:index');
+import * as mongoose from 'mongoose';
+import * as util from 'util';
+import * as libdebug from 'debug';
+const debug = libdebug('express-mongoose-es6-rest-api:index');
 
-const config = require('./config');
+import * as config from './config';
 
 // connect to mongo db
 const mongoUri = config.mongo.host;
-mongoose.connect(mongoUri, { keepAlive: 1 });
+mongoose.connect(mongoUri, { keepAlive: true, useNewUrlParser: true });
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`);
 });
+
+console.log('mongo db connected');
 
 // print mongoose logs in dev env
 if (config.MONGOOSE_DEBUG) {

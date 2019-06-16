@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowJs": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
@@ -14,6 +15,11 @@
     "lib": [
       "es2017",
       "dom"
-    ]
-  }
+    ],
+  },
+  "include": [
+    "./src/**/*",
+    "./server/**/*",
+    "./node_modules/@types/node/index.d.ts",
+  ],
 }

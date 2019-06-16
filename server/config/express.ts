@@ -1,24 +1,26 @@
-const path = require('path');
-const express = require('express');
-const httpError = require('http-errors');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const compress = require('compression');
-const methodOverride = require('method-override');
-const cors = require('cors');
-const helmet = require('helmet');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-const routes = require('../routes/index.route');
-const config = require('./config');
-const passport = require('./passport')
-const events = require('../../events');
+import * as path from 'path';
+import * as express from 'express';
+import * as httpError  from 'http-errors';
+import * as logger from 'morgan';
+import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
+import * as compress from 'compression';
+import * as methodOverride from 'method-override';
+import * as cors from 'cors';
+import * as helmet from 'helmet';
+import * as swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './swagger.json';
+import routes from '../routes/index.route';
+import * as config from './config';
+import * as passport from './passport';
+import * as events from '../../events';
 
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-const socket = require('../chat/socket');
+import * as httpServer from 'http';
+import * as  socketIO from 'socket.io';
+const http = new httpServer.Server(app);
+const io = socketIO(http);
+import {handleSocket} from '../chat/socket';
 const socket_port = 3000;
 
 if (config.env === 'development') {
@@ -92,10 +94,10 @@ app.use((err, req, res, next) => {
 
 // chat stuff follows
 // TODO: refactor all of this into a new file
-io.on(events.CONNECT, socket);
+io.on(events.CONNECT, handleSocket);
 
 http.listen(socket_port, () => {
   console.log('socket is listening on port: ' + socket_port);
 });
 
-module.exports = app;
+export default app;

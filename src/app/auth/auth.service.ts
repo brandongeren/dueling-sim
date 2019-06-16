@@ -17,7 +17,8 @@ export class AuthService {
   ) {}
 
   public $userSource = new Subject<any>();
-
+  
+  // TODO: change email here to username, up and down the whole stack
   login(email : string, password : string) : Observable <any> {
     return Observable.create(observer => {
       this.http.post('/api/auth/login', {

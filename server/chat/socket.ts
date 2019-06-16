@@ -1,17 +1,13 @@
-const events = require('../../events');
-const createRoom = require('./factories');
+import * as events from '../../events';
 
 let connectedUsers = { };
-let general = createRoom({ name: "general", });
-let rooms = { };
-rooms[general.name] = general;
 
 // TODO: make a new file (chat.js maybe?) for parsing chat messages
 // model it after this: https://github.com/Zarel/Pokemon-Showdown/blob/master/server/chat.js
 // cmd + f "command parser"
 // read the documentation there
 
-module.exports = (socket) => {
+export function handleSocket(socket) {
   console.log('Socket ID: ' + socket.id);
 
   socket.on(events.USER_CONNECTED, (user) => {
@@ -64,13 +60,6 @@ module.exports = (socket) => {
       console.log('from: ' + data.from.username);
       console.log('to: ' + data.to.username);
       console.log(data.message);
-      // TODO: this is a shitty way of naming the chat
-      // if users have '&' in their names, then it could cause anti-uniqueness problems
-      // ideally we eventually refactor dm's into being distinct from normal conversation
-      // pokemon showdown and db do that
-      // let name = from.username + ' & ' + to.username;
-      // const room = createRoom({users: [to, from], pm: true, name: name});
-      // rooms[name] = room;
       const toSocket = connectedUsers[data.to.username].socket;
       toSocket.emit(events.PRIVATE_MESSAGE, data);
       socket.emit(events.PRIVATE_MESSAGE, data);

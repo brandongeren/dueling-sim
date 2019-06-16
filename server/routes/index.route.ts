@@ -1,6 +1,9 @@
-const express = require('express');
-const userRoutes = require('./user.route');
-const authRoutes = require('./auth.route');
+import * as express from 'express';
+// const userRoutes = require('./user.route');
+// const authRoutes = require('./auth.route');
+
+import userRoutes from './user.route';
+import authRoutes from './auth.route';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -12,4 +15,4 @@ router.get('/health-check', (req, res) =>
 router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
 
-module.exports = router;
+export default router;
