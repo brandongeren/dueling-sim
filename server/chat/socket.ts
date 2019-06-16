@@ -10,6 +10,7 @@ let connectedUsers = { };
 export function handleSocket(socket) {
   console.log('Socket ID: ' + socket.id);
 
+  // TODO: this is never getting called. fix that
   socket.on(events.USER_CONNECTED, (user) => {
     let newUser = user.user;
     console.log(newUser.username + ' has joined!');
