@@ -11,7 +11,7 @@ import { ChatService } from '../chat/chat.service';
 export class AuthService {
 
   constructor(
-    private http : HttpClient, 
+    private http: HttpClient, 
     private token: TokenStorage, 
     private chatService: ChatService,
   ) {}
@@ -24,7 +24,7 @@ export class AuthService {
       this.http.post('/api/auth/login', {
         username,
         password
-      }).subscribe((data : any) => {
+      }).subscribe((data: any) => {
           observer.next({user: data.user});
           this.setUser(data.user);
           this.token.saveToken(data.token);
@@ -40,7 +40,7 @@ export class AuthService {
         email,
         password,
         repeatPassword
-      }).subscribe((data : any) => {
+      }).subscribe((data: any) => {
         observer.next({user: data.user});
         this.setUser(data.user);
         this.token.saveToken(data.token);
@@ -63,7 +63,7 @@ export class AuthService {
     return Observable.create(observer => {
       const tokenVal = this.token.getToken();
       if (!tokenVal) return  observer.complete();
-      this.http.get('/api/auth/me').subscribe((data : any) => {
+      this.http.get('/api/auth/me').subscribe((data: any) => {
         observer.next({user: data.user});
         this.setUser(data.user);
         observer.complete();
