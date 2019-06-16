@@ -13,16 +13,16 @@ export class AuthService {
   constructor(
     private http : HttpClient, 
     private token: TokenStorage, 
-    private chatService: ChatService
+    private chatService: ChatService,
   ) {}
 
   public $userSource = new Subject<any>();
   
   // TODO: change email here to username, up and down the whole stack
-  login(email : string, password : string) : Observable <any> {
+  login(username: string, password: string): Observable <any> {
     return Observable.create(observer => {
       this.http.post('/api/auth/login', {
-        email,
+        username,
         password
       }).subscribe((data : any) => {
           observer.next({user: data.user});
@@ -33,7 +33,7 @@ export class AuthService {
     });
   }
 
-  register(username : string, email : string, password : string, repeatPassword : string) : Observable <any> {
+  register(username: string, email: string, password: string, repeatPassword: string): Observable <any> {
     return Observable.create(observer => {
       this.http.post('/api/auth/register', {
         username,
