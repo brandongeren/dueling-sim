@@ -1,18 +1,21 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const bcrypt = require('bcrypt');
+import * as passport from 'passport';
+import * as passportLocal from 'passport-local';
+import * as PassportJWT from 'passport-jwt';
+import * as bcrypt from 'bcrypt';
 
-const User = require('../models/user.model');
-const config = require('./config');
+import User from '../models/user.model';
+import * as config from './config';
 
-const localLogin = new LocalStrategy({
+const ExtractJwt = PassportJWT.ExtractJwt;
+const JwtStrategy = PassportJWT.Strategy;
+
+
+const localLogin = new passportLocal.Strategy({
   usernameField: 'username'
 }, async (username, password, done) => {
   let user = await User.findOne({ username });
   if (!user || !bcrypt.compareSync(password, user.hashedPassword)) {
-    return done(null, false, { error: 'Your login details could not be verified. Please try again.' });
+    return done(null, false, { message: 'Your login details could not be verified. Please try again.' });
   }
   user = user.toObject();
   delete user.hashedPassword;
@@ -35,4 +38,4 @@ const jwtLogin = new JwtStrategy({
 passport.use(jwtLogin);
 passport.use(localLogin);
 
-module.exports = passport;
+export default passport;

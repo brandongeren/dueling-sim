@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as Joi from 'joi';
-import '../models/user.model';
+import User from '../models/user.model';
 
 const userSchema = Joi.object({
   username: Joi.string().required(),
@@ -18,5 +18,5 @@ export async function insert(user) {
   user.hashedPassword = bcrypt.hashSync(user.password, 10);
   delete user.password;
   // TODO: create a naming convention for mongoose schemas
-  return await new userSchema(user).save();
+  return await User.create(user);
 }
