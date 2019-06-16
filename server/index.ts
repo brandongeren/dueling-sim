@@ -1,6 +1,7 @@
 // config should be imported before importing any other file
-const config = require('./config/config');
-const app = require('./config/express');
+import * as config from './config/config';
+import app from './config/express';
+// this line is necessary to run the mongo backend
 require('./config/mongoose');
 
 // module.parent check is required to support mocha watch
@@ -11,4 +12,4 @@ if (!module.parent) {
   });
 }
 
-module.exports = app;
+export default app;

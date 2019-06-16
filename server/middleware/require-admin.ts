@@ -1,4 +1,4 @@
-const httpError = require('http-errors');
+import * as  httpError from 'http-errors';
 
 const requireAdmin = function (req, res, next) {
   if (req.user && req.user.roles.indexOf('admin') > -1) 
@@ -7,4 +7,4 @@ const requireAdmin = function (req, res, next) {
   return next(err);
 }
 
-module.exports = requireAdmin;
+export default requireAdmin;
