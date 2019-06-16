@@ -10,6 +10,9 @@ const userSchema = Joi.object({
   repeatPassword: Joi.string().required().valid(Joi.ref('password'))
 })
 
+// TODO: add exception handling here 
+// more info: https://wanago.io/2018/12/24/typescript-express-registering-authenticating-jwt/
+// i think it's number 2 or 3 in the tutorial series
 export async function insert(user) {
   user = await Joi.validate(user, userSchema, { abortEarly: false });
   user.hashedPassword = bcrypt.hashSync(user.password, 10);
