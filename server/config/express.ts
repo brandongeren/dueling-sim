@@ -12,7 +12,7 @@ import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from './swagger.json';
 import routes from '../routes/index.route';
 import * as config from './config';
-import * as passport from './passport';
+import passport  from './passport';
 import * as events from '../../events';
 
 const app = express();
@@ -26,8 +26,6 @@ const socket_port = 3000;
 if (config.env === 'development') {
   app.use(logger('dev'));
 }
-
-// TODO: refactor the whole backend to TypeScript
 
 // Choose what fronten framework to serve the dist from
 var distDir = '../../dist/';
@@ -92,8 +90,6 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-// chat stuff follows
-// TODO: refactor all of this into a new file
 io.on(events.CONNECT, handleSocket);
 
 http.listen(socket_port, () => {

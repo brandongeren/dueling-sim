@@ -11,20 +11,20 @@ import { ChatService } from '../chat/chat.service';
 export class AuthService {
 
   constructor(
-    private http : HttpClient, 
+    private http: HttpClient, 
     private token: TokenStorage, 
-    private chatService: ChatService
+    private chatService: ChatService,
   ) {}
 
   public $userSource = new Subject<any>();
   
   // TODO: change email here to username, up and down the whole stack
-  login(email : string, password : string) : Observable <any> {
+  login(username: string, password: string): Observable <any> {
     return Observable.create(observer => {
       this.http.post('/api/auth/login', {
-        email,
+        username,
         password
-      }).subscribe((data : any) => {
+      }).subscribe((data: any) => {
           observer.next({user: data.user});
           this.setUser(data.user);
           this.token.saveToken(data.token);
@@ -33,14 +33,14 @@ export class AuthService {
     });
   }
 
-  register(username : string, email : string, password : string, repeatPassword : string) : Observable <any> {
+  register(username: string, email: string, password: string, repeatPassword: string): Observable <any> {
     return Observable.create(observer => {
       this.http.post('/api/auth/register', {
         username,
         email,
         password,
         repeatPassword
-      }).subscribe((data : any) => {
+      }).subscribe((data: any) => {
         observer.next({user: data.user});
         this.setUser(data.user);
         this.token.saveToken(data.token);
@@ -63,7 +63,7 @@ export class AuthService {
     return Observable.create(observer => {
       const tokenVal = this.token.getToken();
       if (!tokenVal) return  observer.complete();
-      this.http.get('/api/auth/me').subscribe((data : any) => {
+      this.http.get('/api/auth/me').subscribe((data: any) => {
         observer.next({user: data.user});
         this.setUser(data.user);
         observer.complete();

@@ -72,6 +72,8 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "10.1.4",
+    "@types/passport-jwt": "^3.0.1",
+    "@types/passport-local": "^1.0.33",
     "@types/webpack-env": "^1.13.9",
     "codelyzer": "4.3.0",
     "concurrently": "^3.5.1",
