@@ -1,7 +1,10 @@
+import { updateClassProp } from "@angular/core/src/render3/styling";
+
 export interface IGameState {
   // TODO: String might not be the best data structure to represent a player username
 
   // the players map uses player usernames to their player gamestate 
+  // TODO: perhaps this should use the Player interface
   players: Map<String, IPlayerGameState>,
   turnPlayer: String,
   // TODO: make phases into a real type
@@ -14,6 +17,8 @@ export interface IGameState {
   // target is a map from player usernames to the card they are pointing at
   // useful for cards like mystical space typhoon that require selecting a target
   target: Map<String, IZone>,
+
+  updateLP(player: String, change: Number);
 
   // TODO: create extra monster zones here
 }
@@ -35,6 +40,7 @@ export interface IPlayerGameState {
   m3: IMonsterZone,
   m4: IMonsterZone,
   m5: IMonsterZone,
+  updateLP(change: Number),
 }
 
 export interface IZone {
@@ -43,6 +49,7 @@ export interface IZone {
   removeCard(),
 }
 
+// TODO: might want to move this to another file and make this one a .d.ts file
 export class Zone implements IZone {
   card?: GameCard;
   faceup?: Boolean;
