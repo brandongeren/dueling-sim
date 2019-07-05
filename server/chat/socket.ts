@@ -1,6 +1,8 @@
 import * as events from '../../events';
 
 let connectedUsers = { };
+const COMMAND_TOKENS = ['!', '/'];
+const BROADCAST_TOKEN = ['!'];
 
 // TODO: make a new file (chat.js maybe?) for parsing chat messages
 // model it after this: https://github.com/Zarel/Pokemon-Showdown/blob/master/server/chat.js
@@ -33,13 +35,8 @@ export function handleSocket(socket) {
     let from = data.from;
     console.log('new message! from: ' + from.username);
     let message = data.message;
-    // abstract out the below stuff to a generalized function to handle chat message filtering
-    // that function will also handle when users are muted
-    // in addition, that function can handle slash commands
-    // remove zalgo
-    message = message.replace(/[\u0300-\u036f\u0483-\u0489\u0610-\u0615\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06ED\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]{3,}/g, '');
-    // remove alternative space characters, and others
-    message = message.replace(/[\u115f\u1160\u239b-\u23b9]/g, '');
+
+    parseMessage(message, from);
     
     console.log(message);
     // TODO: change this to a socket.to().emit()
@@ -114,4 +111,40 @@ function disconnectUser(socket, logout=false) {
   // the line is useful in production though
   // TODO: find a solution to this problem
   // connectedUsers = removeUser(connectedUsers, socket.user);
+}
+
+/* this function serves two purposes:
+   1: it removes bad characters from the message text
+   2: it parses the resulting string to see if it contains a chat command, 
+      if it is a chat command, then the proper action is taken
+*/
+function parseMessage(message: String, from: String) {
+    // abstract out the below stuff to a generalized function to handle chat message filtering
+    // that function will also handle when users are muted
+    // in addition, that function can handle slash commands
+    // remove zalgo
+    message = message.replace(/[\u0300-\u036f\u0483-\u0489\u0610-\u0615\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06ED\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]{3,}/g, '');
+    // remove alternative space characters, and others
+    message = message.replace(/[\u115f\u1160\u239b-\u23b9]/g, '');
+
+    for (let char in COMMAND_TOKENS) {
+      if (message.startsWith(char)) {
+        executeCommand(message, from);
+      }
+    }
+}
+
+function executeCommand(message: String, from: String) {
+  splitCommand(message);
+
+  // TODO: then do the command
+}
+
+function splitCommand(message: String) {
+  if (!message || !message.trim().length) return;
+
+  // thanks to pokemon showdown for this:
+  let commandToken = message.charAt(0);
+
+  if (!COMMAND_TOKENS.includes(commandToken)) return;
 }
