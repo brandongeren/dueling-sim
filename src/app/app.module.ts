@@ -17,6 +17,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { ChatComponent } from './chat/chat.component';
 import { ChatService } from './chat/chat.service';
+import { DuelComponent } from './duel/duel.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ChatService } from './chat/chat.service';
     HeaderComponent,
     HomeComponent,
     ChatComponent,
+    DuelComponent,
   ],
   imports: [
     BrowserModule,

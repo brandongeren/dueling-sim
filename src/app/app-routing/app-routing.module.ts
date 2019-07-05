@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../auth/auth-guard.service';
 import { HomeComponent } from '../home/home.component';
 import { ChatComponent } from '../chat/chat.component';
+import { DuelComponent } from '../duel/duel.component';
 
 const routes: Routes = [{
   path: '',
@@ -16,6 +17,9 @@ const routes: Routes = [{
 }, {
   path: 'chat',
   component: ChatComponent
+}, {
+  path: 'duel/:id',
+  component: DuelComponent
 }];
 
 @NgModule({
