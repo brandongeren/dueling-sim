@@ -1,5 +1,6 @@
 // config should be imported before importing any other file
 import * as config from './config/config';
+import * as duels from './duels/duels';
 import app from './config/express';
 // this line is necessary to run the mongo backend
 require('./config/mongoose');

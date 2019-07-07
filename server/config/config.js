@@ -39,7 +39,10 @@ const config = {
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
-  }
+  },
+  // TODO: make these inputs from the config file
+  COMMAND_TOKENS = envVars.COMMAND_TOKENS || ['!', '/'],
+  BROADCAST_TOKEN = envVars.BROADCAST_TOKEN || ['!'],
 };
 
 module.exports = config;

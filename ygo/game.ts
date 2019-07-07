@@ -1,4 +1,44 @@
-import { updateClassProp } from "@angular/core/src/render3/styling";
+export interface IDuelRoom {
+  // represent players as just their username
+  // username uniquely identifies a player, and we don't need any more information to perform database actions
+  players: String[],
+  gameState: IGameState,
+  id: String,
+}
+
+// TODO: might be necessary to move classes to another file and make this one a .d.ts file
+export class DuelRoom implements IDuelRoom {
+  players: String[];
+  gameState: IGameState;
+  id: String;
+
+  /*  TODO: initialization:
+      this class should be initialized with new player objects made from the players in the duel
+      the gameState should be created using a new gameState method that creates a gameState with the 2 players' decks
+          (put decks in random order)
+  */
+  constructor(players: String[], id: String) {
+    this.players = players;
+    this.gameState = new GameState(players);
+    this.id = id;
+  }
+
+  // increase or decrease the life points of a player
+  // TODO: we will use LP as our first test that the duel is working properly
+  updateLP(username: String, change: number) {
+    // TODO: update the type of change to be bigint
+    // problem: bigint type is only available in typescript 3.2 or higher, 
+    // which requires updating all of the angular stuff to match it
+    this.gameState.updateLP(username, change);
+  }
+
+  /* 
+  TODO: add in all of the other commands like:
+  moveCard
+  shuffleHand
+  draw
+  */
+}
 
 export interface IGameState {
   // TODO: String might not be the best data structure to represent a player username
@@ -6,9 +46,9 @@ export interface IGameState {
   // the players map uses player usernames to their player gamestate 
   // TODO: perhaps this should use the Player interface
   players: Map<String, IPlayerGameState>,
-  turnPlayer: String,
+  turnPlayer?: String,
   // TODO: make phases into a real type
-  phase: String,
+  phase?: String,
 
   // lifepoints is a map from player usernames to their lifepoints as a number
   // TODO: make this an integer type
@@ -16,31 +56,63 @@ export interface IGameState {
 
   // target is a map from player usernames to the card they are pointing at
   // useful for cards like mystical space typhoon that require selecting a target
-  target: Map<String, IZone>,
+  // target should be optional
+  target?: Map<String, IZone>,
 
-  updateLP(player: String, change: Number);
+  updateLP(player: String, change: number);
 
   // TODO: create extra monster zones here
 }
 
+export class GameState implements IGameState {
+  players: Map<String, IPlayerGameState>;
+  turnPlayer?: String;
+  phase?: String;
+  lifepoints: Map<String, number>;
+  target?: Map<String, IZone>;
+
+  constructor(players: String[]) {
+    this.players = new Map<String, IPlayerGameState>();
+    this.lifepoints = new Map<String, number>();
+
+    for (let player of players) {
+      // TODO: create a format object that specifies details at creation of the duel, such as starting LP
+      // Format object includes details that make a format different from any other
+      this.lifepoints.set(player, 8000);
+      this.players.set(player, new PlayerGameState());
+    }
+  }
+
+  updateLP(player: String, change: number) {
+    let curLP: number = this.lifepoints.get(player);
+    this.lifepoints.set(player, curLP + change);
+  }
+}
+
 export interface IPlayerGameState {
-  hand: GameCard[],
-  banish: GameCard[],
-  deck: GameCard[],
-  extra: GameCard[],
+  // TODO: make these things not optional
+  hand?: GameCard[],
+  banish?: GameCard[],
+  deck?: GameCard[],
+  extra?: GameCard[],
   // graveyard is of type ICard because it is always public information
-  grave: ICard[],
-  s1: IZone,
-  s2: IZone,
-  s3: IZone,
-  s4: IZone,
-  s5: IZone,
-  m1: IMonsterZone,
-  m2: IMonsterZone,
-  m3: IMonsterZone,
-  m4: IMonsterZone,
-  m5: IMonsterZone,
-  updateLP(change: Number),
+  grave?: ICard[],
+  s1?: IZone,
+  s2?: IZone,
+  s3?: IZone,
+  s4?: IZone,
+  s5?: IZone,
+  m1?: IMonsterZone,
+  m2?: IMonsterZone,
+  m3?: IMonsterZone,
+  m4?: IMonsterZone,
+  m5?: IMonsterZone,
+}
+
+export class PlayerGameState {
+  constructor() {
+    
+  }
 }
 
 export interface IZone {

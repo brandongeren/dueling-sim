@@ -1,8 +1,8 @@
 import * as events from '../../events';
+import * as config from '../config/config'
+import { executeCommand } from './commands';
 
 let connectedUsers = { };
-const COMMAND_TOKENS = ['!', '/'];
-const BROADCAST_TOKEN = ['!'];
 
 // TODO: make a new file (chat.js maybe?) for parsing chat messages
 // model it after this: https://github.com/Zarel/Pokemon-Showdown/blob/master/server/chat.js
@@ -127,24 +127,20 @@ function parseMessage(message: String, from: String) {
     // remove alternative space characters, and others
     message = message.replace(/[\u115f\u1160\u239b-\u23b9]/g, '');
 
-    for (let char in COMMAND_TOKENS) {
+    for (let char in config.COMMAND_TOKENS) {
       if (message.startsWith(char)) {
         executeCommand(message, from);
       }
     }
 }
 
-function executeCommand(message: String, from: String) {
-  splitCommand(message);
+export function emitChallenge(from, to, id) {
+  if (connectedUsers[from] && connectedUsers[to]) {
+    let fromUser = connectedUsers[from], toUser = connectedUsers[to];
+    let fromSocket = fromUser.socket, toSocket = toUser.socket;
 
-  // TODO: then do the command
-}
-
-function splitCommand(message: String) {
-  if (!message || !message.trim().length) return;
-
-  // thanks to pokemon showdown for this:
-  let commandToken = message.charAt(0);
-
-  if (!COMMAND_TOKENS.includes(commandToken)) return;
+    let challenge = { from: fromUser, to: toUser, id: id };
+    fromSocket.emit(events.CHALLENGE, challenge);
+    toSocket.emit(events.CHALLENGE, challenge);
+  }
 }

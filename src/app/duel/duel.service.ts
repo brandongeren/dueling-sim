@@ -12,8 +12,8 @@ export class DuelService {
 
   constructor(private http: HttpClient) { }
 
-  getDuelById(id) {
-    let duel = this.http.get(`${this.url}/${id}`);
-    return duel;
+  getDuelRoomById(id) {
+    let duelRoom = this.http.get(`${this.url}/${id}`);
+    return duelRoom;
   }
 }

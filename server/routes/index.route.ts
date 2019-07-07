@@ -4,6 +4,7 @@ import * as express from 'express';
 
 import userRoutes from './user.route';
 import authRoutes from './auth.route';
+import duelRoutes from './duel.route';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -14,5 +15,6 @@ router.get('/health-check', (req, res) =>
 
 router.use('/auth', authRoutes);
 router.use('/user', userRoutes);
+router.use('/duel', duelRoutes);
 
 export default router;
